@@ -1,13 +1,13 @@
-
-from datetime import datetime
 from app.extensions import db
 
+from datetime import datetime
 
-class Role(db.Model):
-    __tablename__ = "roles"
+class Permission(db.Model):
+    __tablename__ = "permissions"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    libelle = db.Column(db.String(50), unique=True, nullable=False)
+
+    id = db.Column(db.Integer, primary_key=True)
+
 
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Date de création
@@ -27,6 +27,3 @@ class Role(db.Model):
     def is_deleted(self):
         """ Vérifie si l'élément est supprimé """
         return self.deleted_at is not None
-
-    def __repr__(self):
-        return f"<Role {self.name}>"
