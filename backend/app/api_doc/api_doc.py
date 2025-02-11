@@ -2,7 +2,6 @@
 from marshmallow import Schema, fields
 
 class AgentFieldSchema(Schema):
-    required_fields = ["name","lastname","username", "password", "email", "start_time", "end_time", "support"]
     name = fields.Str(required=True, description="Nom de l'agent")
     lastname = fields.Str(required=True, description="Prenom de l'agent")
     username = fields.Str(required=True, description="Prenom de l'agent")
@@ -27,6 +26,20 @@ class AgentDataSchema(Schema):
 class AgentResponseForDataSchema(Schema):
     message = fields.Str(description="Message de succès ou d'erreur")
     data = fields.List(fields.Nested(AgentDataSchema))
+
+
+
+
+
+
+# Login Superviseur
+class LoginSuperViseurSchema(Schema):
+    email = fields.Str(description="Email du superviseur")
+    password = fields.Str(description="Mot de passe du superviseur")
+
+class LoginSuperviseurResponseSchema(Schema):
+    message = fields.Str(description="Message de succès ou d'erreur")
+    data = fields.Str(description="Token du superviseur")
 
 
 

@@ -2,6 +2,7 @@ from datetime import time, timedelta
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token
 
+from app.api_doc.api_doc import LoginSuperViseurSchema, LoginSuperviseurResponseSchema
 from app.authentication.auth import Auth
 from app.models.role import Role
 from app.models.user import User
@@ -12,6 +13,9 @@ from app.extensions import csrf
 
 from app.extensions import db
 from werkzeug.security import generate_password_hash
+
+
+from flask_apispec import use_kwargs, marshal_with, doc
 
 
 
@@ -70,6 +74,9 @@ def create():
 
 @user_bp.route("/login", methods=["POST"])
 @csrf.exempt
+@doc(description="Login  superviseur", tags=["Superviseur"])
+@use_kwargs(LoginSuperViseurSchema,location="json")
+@marshal_with(LoginSuperviseurResponseSchema)
 def login_superviseur():
     fields = request.json
     required_fields = ["password", "email"]

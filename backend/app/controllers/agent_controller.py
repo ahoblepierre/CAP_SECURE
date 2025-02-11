@@ -19,7 +19,7 @@ agent_bp = Blueprint("agent", __name__)
 
 @agent_bp.route("/", methods=["GET"])
 @doc(description="Liste des agents", tags=["Agent"])
-@use_kwargs(AgentResponseForDataSchema, location="json")
+@marshal_with(AgentResponseForDataSchema)
 @jwt_required()
 @jwt_required()
 def index():
@@ -45,8 +45,8 @@ def index():
 @csrf.exempt # delete  Cross
 @agent_bp.route("/create", methods=["POST"])
 @doc(description="Ajouter un  agent", tags=["Agent"])
-@use_kwargs(AgentResponseSchema, location="json")
-@marshal_with(AgentFieldSchema)
+@use_kwargs(AgentFieldSchema,location="json")
+@marshal_with(AgentResponseSchema)
 @jwt_required() # Jwt required
 def create():
     user_id = get_jwt_identity()
