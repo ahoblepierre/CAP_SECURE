@@ -49,14 +49,57 @@ def destroy(id:str):
     @click.argument("name")
     def make_model(name):
         """Crée un modèle à la volée."""
-        model_path = f"app/models/{name.lower()}.py"
+        models_dir = "app/models"
+        model_path = f"{models_dir}/{name.lower()}.py"
+        init_file = f"{models_dir}/__init__.py"
         content = f"""from app.extensions import db
+from datetime import datetime
 
 class {name}(db.Model):
+    __tablename__ = "{name.lower()}s"
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Date de création
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  # Date de mise à jour
+    deleted_at = db.Column(db.DateTime, nullable=True)  # Soft delete (null = non supprimé)
+
+
+    def soft_delete(self):
+        #Marque l'élément comme supprimé sans l'effacer réellement
+        self.deleted_at = datetime.utcnow()
+        db.session.commit()
+
+    def restore(self):
+        #Restaure un élément supprimé
+        self.deleted_at = None
+        db.session.commit()
+
+    def is_deleted(self):
+        #Vérifie si l'élément est supprimé
+        return self.deleted_at is not None
 """
         create_file(model_path, content)
+
+        # Ajouter l'import dans __init__.py en haut du fichier
+        model_import = f"from app.models.{name.lower()} import {name}\n"
+
+        if not os.path.exists(init_file):
+            # Si le fichier n'existe pas, le créer avec l'import directement
+            with open(init_file, "w") as f:
+                f.write(model_import)
+                f.write("\n\ndef init_db():\n    db.create_all()\n")
+        else:
+            with open(init_file, "r") as f:
+                lines = f.readlines()
+
+            # Vérifier si l'import existe déjà
+            if model_import not in lines:
+                # Insérer l'import en haut du fichier
+                with open(init_file, "w") as f:
+                    f.write(model_import)
+                    f.writelines(lines)  # Réécrire le reste du fichier sans modifications
+
         click.echo(f" ✅  Modèle '{name}' ...................... créé avec succès!")
 
     @app.cli.command("make:middleware")

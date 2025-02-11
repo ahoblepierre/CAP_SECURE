@@ -8,6 +8,9 @@ from flask_wtf.csrf import CSRFProtect
 
 from flask_login import LoginManager
 
+from flask_apispec import FlaskApiSpec
+
+
 db = SQLAlchemy()
 
 migrate = Migrate()  # Ajout de Flask-Migrate
@@ -21,5 +24,9 @@ csrf = CSRFProtect() # CSRF
 
 # Initialiser le gestionnaire de sessions
 login_manager = LoginManager()
+
+
+docs = FlaskApiSpec()
+
 
 
