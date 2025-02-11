@@ -1,0 +1,20 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Mon API Flask",
+      "version": "1.0.0",
+      "description": "Documentation de l'API Flask"
+    },
+    "paths": {
+      "/api/resource": {
+        "get": {
+          "summary": "Obtenir une ressource",
+          "responses": {
+            "200": {
+              "description": "Ressource obtenue avec succès"
+            }
+          }
+        }
+      }
+    }
+  }

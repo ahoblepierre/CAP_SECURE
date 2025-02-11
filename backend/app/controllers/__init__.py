@@ -1,10 +1,18 @@
 from flask import Flask
-from app.controllers.home_controller import home_bp
-from app.controllers.produit_controller import produit_bp
-from app.controllers.user_controller import user_bp
+from app.controllers.agent_controller import agent_bp, create as createAgent, index as indexAgent
+from app.controllers.user_controller import user_bp, create as createUser, login_superviseur
+
+from app.extensions import docs
 
 def register_blueprints(app: Flask):
-   # Home controller route
-   app.register_blueprint(home_bp, url_prefix='/api/home')
-   app.register_blueprint(produit_bp, url_prefix='/api/produit')
+   app.register_blueprint(agent_bp, url_prefix='/api/agent')
+   # Home controller route login_superviseur
    app.register_blueprint(user_bp, url_prefix="/api/user")
+
+
+   docs.register(createAgent, blueprint="agent")
+   docs.register(indexAgent, blueprint="agent")
+
+
+   docs.register(createUser, blueprint="user")
+   docs.register(login_superviseur, blueprint="user")

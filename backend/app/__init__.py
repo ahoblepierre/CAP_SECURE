@@ -1,15 +1,19 @@
-from flask import Flask, request
+from flask import Flask, send_from_directory
 import os
 from app.models.user import User
 from app.config.development import DevelopmentConfig
 from app.controllers import register_blueprints
-from app.extensions import db, migrate, login_manager
+from app.extensions import  db, migrate, login_manager
 
 from app.models import init_db  # Import des modèles
 
 from app.extensions import jwt
 
 from app.extensions import csrf
+
+
+from app.extensions import docs
+
 
 from flask_talisman import Talisman
 
@@ -29,7 +33,7 @@ def create_app():
 
     csrf.init_app(app)  # Active la protection CSRF
 
-    Talisman(app) # 🔥 Active les protections HTTP sécurisées
+    Talisman(app, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
 
 
 
@@ -59,6 +63,7 @@ def create_app():
     with app.app_context():
         init_db()
 
+    
     # Enregistrer les routes
     register_blueprints(app)
 
@@ -66,6 +71,10 @@ def create_app():
 
     # Enregistrer les commandes personnalisées
     register_commands(app)
+
+
+    docs.init_app(app)
+
 
 
     return app
