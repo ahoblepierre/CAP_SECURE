@@ -4,6 +4,7 @@ from datetime import datetime
 class AgentUser(db.Model):
     __tablename__ = "agent_users"
     id = db.Column(db.Integer, primary_key=True)
+    
 
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Date de création
