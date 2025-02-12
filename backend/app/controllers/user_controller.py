@@ -15,9 +15,6 @@ from app.extensions import db
 from werkzeug.security import generate_password_hash
 
 
-from flask_apispec import use_kwargs, marshal_with, doc
-
-
 
 user_bp = Blueprint("user", __name__)
 @csrf.exempt
@@ -74,10 +71,8 @@ def create():
 
 @user_bp.route("/login", methods=["POST"])
 @csrf.exempt
-@doc(description="Login  superviseur", tags=["Superviseur"])
-@use_kwargs(LoginSuperViseurSchema,location="json")
-@marshal_with(LoginSuperviseurResponseSchema)
-def login_superviseur():
+
+def login_superviseur(email, password):
     fields = request.json
     required_fields = ["password", "email"]
     # Vérifier si tous les champs obligatoires sont présents
@@ -89,13 +84,9 @@ def login_superviseur():
             422,
         )
     
-    email=request.json.get("email")
-    password=request.json.get("password")
-    
     if Auth.attempt(email=email, password=password):
         user = Auth.user()
         access_token = create_access_token(identity=str(user.id),expires_delta=timedelta(hours=24))
         return {"msg":"Connexion réussi", "data" :access_token}, 200
     
     return {"msg":"Email ou mot de passe incorrecte"},400
- 

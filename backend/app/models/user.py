@@ -6,16 +6,13 @@ import uuid
 class User(db.Model):
     __tablename__ = "users"
 
-    __table_args__ = (
-        db.UniqueConstraint('email', name='uq_email'),
-    )
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     uid = db.Column(db.String(200), unique=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(80), nullable=False)
     lastname = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(200), nullable=False)
     support  = db.Column(db.String(200), nullable=True)
     start_time = db.Column(db.Time(), nullable=True, default=time(6, 30, 0))

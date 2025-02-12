@@ -1,5 +1,5 @@
-
 from marshmallow import Schema, fields
+
 
 class AgentFieldSchema(Schema):
     name = fields.Str(required=True, description="Nom de l'agent")
@@ -13,7 +13,8 @@ class AgentFieldSchema(Schema):
 
 
 class AgentResponseSchema(Schema):
-    message = fields.Str(description="Message de succès ou d'erreur")
+    msg = fields.Str(description="Message de succès ou d'erreur")
+
 
 # Définition du schéma pour chaque élément dans "data"
 class AgentDataSchema(Schema):
@@ -23,24 +24,30 @@ class AgentDataSchema(Schema):
     email = fields.Str(description="Email de l'agent")
     lastname = fields.Str(description="lastname de l'agent")
 
+
+class AgentDataShowSchema(Schema):
+    id = fields.Int(description="ID de l'agent")
+
+
 class AgentResponseForDataSchema(Schema):
     message = fields.Str(description="Message de succès ou d'erreur")
     data = fields.List(fields.Nested(AgentDataSchema))
 
 
-
-
-
-
 # Login Superviseur
 class LoginSuperViseurSchema(Schema):
-    email = fields.Str(description="Email du superviseur")
-    password = fields.Str(description="Mot de passe du superviseur")
+    email = fields.Str(
+        required=True,
+        description="Email du superviseur",
+        error_messages={"required": "L'email est obligatoire."},
+    )
+    password = fields.Str(
+        required=True,
+        description="Mot de passe du superviseur",
+        error_messages={"required": "Le mot de passe est obligatoire."},
+    )
+
 
 class LoginSuperviseurResponseSchema(Schema):
-    message = fields.Str(description="Message de succès ou d'erreur")
+    msg = fields.Str(description="Message de succès ou d'erreur")
     data = fields.Str(description="Token du superviseur")
-
-
-
-
