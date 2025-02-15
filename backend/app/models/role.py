@@ -27,6 +27,12 @@ class Role(db.Model):
     def is_deleted(self):
         """ Vérifie si l'élément est supprimé """
         return self.deleted_at is not None
+    
+
+    def to_dict(self) :
+        return {
+            "libelle": self.libelle
+        }
 
     def __repr__(self):
         return f"<Role {self.name}>"
