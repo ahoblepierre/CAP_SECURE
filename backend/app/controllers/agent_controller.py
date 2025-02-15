@@ -56,10 +56,10 @@ def create():
     
     
     try:
-        user = User.query.filter_by(email =request.json.get("email")).first()
+        # user = User.query.filter_by(email =request.json.get("email")).first()
 
-        if user :
-            return {"msg": "Utilisateur existe déjâ"}, 409
+        # if user :
+        #     return {"msg": "Utilisateur existe déjâ"}, 409
         
         role_agent = Role.query.filter_by(libelle = "AGENT").first()
         hashed_password = generate_password_hash(request.json.get("password"), method='pbkdf2:sha256', salt_length=20)
@@ -74,7 +74,6 @@ def create():
             lastname = request.json.get("lastname"),
             role = role_agent,
             created_by=user_id,
-            matricule = '1212',
         )
 
         db.session.add(user)
