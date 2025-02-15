@@ -27,7 +27,7 @@ class User(db.Model):
     role = db.relationship('Role', backref=db.backref('users', lazy=True))
 
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))  # Référence à l'admin qui a créé l'agent
-    creator = db.relationship('User', backref=db.backref('created_agents', lazy=True), remote_side=[id])
+    creator = db.relationship('User', backref=db.backref('created_agents', lazy='dynamic'), remote_side=[id])
 
 
 
@@ -82,5 +82,7 @@ class User(db.Model):
 @event.listens_for(User, "before_insert")
 def add_matricule(mapper, connection, target):
     """Ajoute un matricule si non défini avant insertion."""
-    if not target.matricule:  # Si aucun matricule n'est défini
+    if not target.matricule and target.role.libelle=="AGENT":  # Si aucun matricule n'est défini
         target.matricule = generate_matricule()
+    else :
+        target.matricule = None
