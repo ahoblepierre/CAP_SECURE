@@ -49,7 +49,7 @@ def create():
         if user :
             return {"msg": "Utilisateur existe déjâ"}, 409
         
-        role_agent = Role.query.filter_by(libelle = "AGENT").first()
+        role_agent = Role.query.filter_by(libelle = "SUPERVISEUR").first()
         hashed_password = generate_password_hash(request.json.get("password"), method='pbkdf2:sha256', salt_length=20)
         agent = User(
             email=request.json.get("email"),
