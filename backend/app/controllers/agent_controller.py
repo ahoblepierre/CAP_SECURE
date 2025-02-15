@@ -73,7 +73,8 @@ def create():
             name = request.json.get("name"),
             lastname = request.json.get("lastname"),
             role = role_agent,
-            created_by=user_id
+            created_by=user_id,
+            matricule = '1212',
         )
 
         db.session.add(user)
