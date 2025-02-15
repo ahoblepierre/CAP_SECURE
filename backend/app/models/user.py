@@ -73,4 +73,5 @@ class User(db.Model):
             "email": self.email,
             "username" : self.username,
             "lastname" : self.username,
+            "role": self.role.to_dict()
         }
