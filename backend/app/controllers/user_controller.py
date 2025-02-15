@@ -74,9 +74,6 @@ def create():
 
 @user_bp.route("/login", methods=["POST"])
 @csrf.exempt
-@doc(description="Login  superviseur", tags=["Superviseur"])
-@use_kwargs(LoginSuperViseurSchema,location="json")
-@marshal_with(LoginSuperviseurResponseSchema)
 def login_superviseur():
     fields = request.json
     required_fields = ["password", "email"]

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from app.api_doc.api_doc import AgentFieldSchema, AgentResponseForDataSchema, AgentResponseSchema
 from app.models.role import Role
 from app.models.user import User
 
@@ -11,16 +10,13 @@ from werkzeug.security import generate_password_hash
 
 from app.extensions import csrf, db
 
-from flask_apispec import use_kwargs, marshal_with, doc
 
 agent_bp = Blueprint("agent", __name__)
 
 # Définition du Blueprint
 
 @agent_bp.route("/", methods=["GET"])
-@doc(description="Liste des agents", tags=["Agent"])
-@marshal_with(AgentResponseForDataSchema)
-@jwt_required()
+@csrf.exempt
 @jwt_required()
 def index():
 
@@ -44,9 +40,6 @@ def index():
 
 @csrf.exempt # delete  Cross
 @agent_bp.route("/create", methods=["POST"])
-@doc(description="Ajouter un  agent", tags=["Agent"])
-@use_kwargs(AgentFieldSchema,location="json")
-@marshal_with(AgentResponseSchema)
 @jwt_required() # Jwt required
 def create():
     user_id = get_jwt_identity()
