@@ -2,7 +2,6 @@ from datetime import time, timedelta
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token
 
-from app.api_doc.api_doc import LoginSuperViseurSchema, LoginSuperviseurResponseSchema
 from app.authentication.auth import Auth
 from app.models.role import Role
 from app.models.user import User
