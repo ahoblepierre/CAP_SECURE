@@ -11,7 +11,7 @@ authentication_bp = Blueprint("authentication", __name__)
 # Définition du Blueprint
 
 
-@authentication_bp.route("/", methods=["GET"])
+@authentication_bp.route("/", methods=["POST"])
 def login():
     fields = request.json
     required_fields = ["password", "email"]
