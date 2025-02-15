@@ -2,6 +2,9 @@
 from datetime import datetime, time
 from app.extensions import db
 import uuid
+from sqlalchemy import event
+
+from app.utils import generate_matricule
 
 class User(db.Model):
     __tablename__ = "users"
@@ -74,3 +77,10 @@ class User(db.Model):
             "matricule": self.matricule,
             "role": self.role.to_dict(),
         }
+    
+    # Événement pour générer le matricule avant insertion
+@event.listens_for(User, "before_insert")
+def add_matricule(mapper, connection, target):
+    """Ajoute un matricule si non défini avant insertion."""
+    if not target.matricule:  # Si aucun matricule n'est défini
+        target.matricule = generate_matricule()
