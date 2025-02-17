@@ -7,7 +7,9 @@ class Role(db.Model):
     __tablename__ = "roles"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    libelle = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+
+    permissions = db.relationship('Permission', secondary='role_permissions', backref=db.backref('roles', lazy='dynamic'))
 
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Date de création
@@ -31,7 +33,7 @@ class Role(db.Model):
 
     def to_dict(self) :
         return {
-            "libelle": self.libelle
+            "name": self.name
         }
 
     def __repr__(self):

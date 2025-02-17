@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.extensions import csrf, db
+from app.middleware import admin_middleware
 from app.models.role import Role
 from app.models.user import User
 from werkzeug.security import generate_password_hash
@@ -15,6 +16,7 @@ superviseur_bp = Blueprint("superviseur", __name__)
 
 @superviseur_bp.route("/", methods=["GET"])
 @csrf.exempt
+@admin_middleware
 @jwt_required()
 def index():
     try :
@@ -76,7 +78,7 @@ def create():
                 422,
             )
         
-        role_user = Role.query.filter_by(libelle = request.json.get("role")).first()
+        role_user = Role.query.filter_by(name = request.json.get("role")).first()
         if role_user : 
             hashed_password = generate_password_hash(request.json.get("password"), method='pbkdf2:sha256', salt_length=20)
             user = User(

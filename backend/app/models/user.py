@@ -67,6 +67,7 @@ class User(db.Model):
         return f"<User {self.username}>"
     
     def to_dict(self):
+        """ Json data"""
         return {
             "id": self.id,
             "uid": self.uid,
@@ -76,13 +77,21 @@ class User(db.Model):
             "lastname" : self.username,
             "matricule": self.matricule,
             "role": self.role.to_dict(),
+            "permissions" : self.permissions()
         }
+    
+    def permissions(self):
+        """ Tous les permissions d'un utilisateurs lié à sn rôle"""
+        if not self.role:
+            return []
+        return list({perm.name for perm in self.role.permissions})
+
     
     # Événement pour générer le matricule avant insertion
 @event.listens_for(User, "before_insert")
 def add_matricule(mapper, connection, target):
     """Ajoute un matricule si non défini avant insertion."""
-    if not target.matricule and target.role.libelle=="AGENT":  # Si aucun matricule n'est défini
+    if not target.matricule and target.role.name=="AGENT":  # Si aucun matricule n'est défini
         target.matricule = generate_matricule()
     else :
         target.matricule = None
