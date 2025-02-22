@@ -14,8 +14,12 @@ from app.extensions import csrf
 
 from flask_talisman import Talisman
 
+from flask_cors import CORS
+
 
 from .commands import register_commands
+
+import logging
 
 def create_app():
     app = Flask(__name__)
@@ -30,7 +34,7 @@ def create_app():
 
     csrf.init_app(app)  # Active la protection CSRF
 
-    Talisman(app, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
+    # Talisman(app, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
 
 
 
@@ -46,6 +50,10 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)  # Ajout de Migrate
     login_manager.init_app(app) # Initiation de login Manager
+
+
+    # Configuration de CORS
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 
 
 
@@ -68,6 +76,10 @@ def create_app():
 
     # Enregistrer les commandes personnalisées
     register_commands(app)
+
+
+
+    logging.basicConfig(level=logging.DEBUG)
 
 
 
