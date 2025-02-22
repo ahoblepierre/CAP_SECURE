@@ -2,6 +2,9 @@
 from datetime import datetime, time
 from app.extensions import db
 import uuid
+from sqlalchemy import event
+
+from app.utils import generate_matricule
 
 class User(db.Model):
     __tablename__ = "users"
@@ -11,19 +14,20 @@ class User(db.Model):
     uid = db.Column(db.String(200), unique=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(80), nullable=False)
     lastname = db.Column(db.String(80), nullable=False)
-    username = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
+    username = db.Column(db.String(80), nullable=True, default=None)
+    email = db.Column(db.String(120), nullable=True, default=None)
     password = db.Column(db.String(200), nullable=False)
-    support  = db.Column(db.String(200), nullable=True)
+    support  = db.Column(db.String(200), nullable=True, default=None)
     start_time = db.Column(db.Time(), nullable=True, default=time(6, 30, 0))
     end_time = db.Column(db.Time(), nullable=True, default=time(18, 0, 0))
     active = db.Column(db.Boolean, default=True)
+    matricule = db.Column(db.String(200), nullable=True, default=None)
 
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id', name='fk_user_role'), nullable=False)
     role = db.relationship('Role', backref=db.backref('users', lazy=True))
 
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))  # Référence à l'admin qui a créé l'agent
-    creator = db.relationship('User', backref=db.backref('created_agents', lazy=True), remote_side=[id])
+    creator = db.relationship('User', backref=db.backref('created_agents', lazy='dynamic'), remote_side=[id])
 
 
 
@@ -70,5 +74,15 @@ class User(db.Model):
             "email": self.email,
             "username" : self.username,
             "lastname" : self.username,
-            "role": self.role.to_dict()
+            "matricule": self.matricule,
+            "role": self.role.to_dict(),
         }
+    
+    # Événement pour générer le matricule avant insertion
+@event.listens_for(User, "before_insert")
+def add_matricule(mapper, connection, target):
+    """Ajoute un matricule si non défini avant insertion."""
+    if not target.matricule and target.role.libelle=="AGENT":  # Si aucun matricule n'est défini
+        target.matricule = generate_matricule()
+    else :
+        target.matricule = None
