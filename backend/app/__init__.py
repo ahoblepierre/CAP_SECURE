@@ -12,9 +12,6 @@ from app.extensions import jwt
 from app.extensions import csrf
 
 
-from app.extensions import docs
-
-
 from flask_talisman import Talisman
 
 
@@ -71,9 +68,6 @@ def create_app():
 
     # Enregistrer les commandes personnalisées
     register_commands(app)
-
-
-    docs.init_app(app)
 
 
 

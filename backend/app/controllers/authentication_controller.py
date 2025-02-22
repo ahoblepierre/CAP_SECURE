@@ -6,6 +6,8 @@ from datetime import time, timedelta
 
 from app.models.user import User
 
+from app.extensions import csrf, db
+
 authentication_bp = Blueprint("authentication", __name__)
 
 # Définition du Blueprint

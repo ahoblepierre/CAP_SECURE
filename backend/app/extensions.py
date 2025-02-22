@@ -8,8 +8,6 @@ from flask_wtf.csrf import CSRFProtect
 
 from flask_login import LoginManager
 
-from flask_apispec import FlaskApiSpec
-
 
 db = SQLAlchemy()
 
@@ -26,7 +24,6 @@ csrf = CSRFProtect() # CSRF
 login_manager = LoginManager()
 
 
-docs = FlaskApiSpec()
 
 
 
