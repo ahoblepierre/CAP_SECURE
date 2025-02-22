@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-
+from app.extensions import csrf, db
 from app.authentication.auth import Auth
 from datetime import time, timedelta
 
