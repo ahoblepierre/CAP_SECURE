@@ -8,8 +8,6 @@ from flask_wtf.csrf import CSRFProtect
 
 from flask_login import LoginManager
 
-from flask_cors import CORS
-
 
 db = SQLAlchemy()
 
@@ -24,9 +22,6 @@ csrf = CSRFProtect() # CSRF
 
 # Initialiser le gestionnaire de sessions
 login_manager = LoginManager()
-
-# cors protection
-cors = CORS()
 
 
 

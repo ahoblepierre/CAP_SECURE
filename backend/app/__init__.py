@@ -14,6 +14,8 @@ from app.extensions import csrf
 
 from flask_talisman import Talisman
 
+from flask_cors import CORS
+
 
 from .commands import register_commands
 
