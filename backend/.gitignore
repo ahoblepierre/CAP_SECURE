@@ -1,9 +1,56 @@
-# Ignorer les fichiers compilés Python
+# Fichiers compilés Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.Python
 
+# Environnements virtuels
+venv/
+env/
+virtualenv/
+.venv/
 
-.vscode
-venv
-env
+# Fichiers de configuration sensibles
+*.env
+*.secret
+config.ini
+
+# Logs
+*.log
+
+# Fichiers temporaires
+*.bak
+*.swp
+*~
+*.tmp
+
+# Dépendances installées
+pip-log.txt
+pip-delete-this-directory.txt
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Outils de développement
+.vscode/
+.idea/  # Si tu utilises PyCharm
+*.sublime-workspace
+
+# Base de données locale (si tu utilises SQLite ou autre)
+*.db
+*.sqlite3
+
+# Fichiers de couverture de tests
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+# macOS
+.DS_Store
+
+# Autres fichiers spécifiques (ajoute selon tes besoins)
+*.bak
+*.cache
