@@ -33,6 +33,11 @@ def create_app():
     Talisman(app, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
 
 
+    # confid cors
+    # Configuration de CORS
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+
+
 
     # Charger la configuration selon l'environnement
     env = os.getenv("FLASK_ENV", "development")
