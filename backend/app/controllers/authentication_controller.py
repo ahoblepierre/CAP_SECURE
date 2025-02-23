@@ -7,7 +7,6 @@ from datetime import time, timedelta
 from app.models.user import User
 
 from app.extensions import csrf, db
-from flask_cors import cross_origin
 
 authentication_bp = Blueprint("authentication", __name__)
 
@@ -15,7 +14,6 @@ authentication_bp = Blueprint("authentication", __name__)
 
 
 @authentication_bp.route("/", methods=["POST","OPTIONS"],strict_slashes=False)
-@cross_origin("http://localhost:4200")
 @csrf.exempt
 def login():
     fields = request.json

@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 import os
 from app.models.user import User
 from app.config.development import DevelopmentConfig
@@ -25,6 +25,16 @@ def create_app():
     app = Flask(__name__)
 
 
+    # Configuration de CORS
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+
+    @app.before_request
+    def handle_options():
+        if request.method == "OPTIONS":
+            return '', 200
+
+
+
 
     #jwt configuration
     app.config["JWT_SECRET_KEY"] = "super-secret-key"
@@ -34,7 +44,7 @@ def create_app():
 
     csrf.init_app(app)  # Active la protection CSRF
 
-    # Talisman(app, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
+    Talisman(app, force_https=False, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
 
 
 
@@ -50,11 +60,6 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)  # Ajout de Migrate
     login_manager.init_app(app) # Initiation de login Manager
-
-
-    # Configuration de CORS
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
-
 
 
     @login_manager.user_loader
