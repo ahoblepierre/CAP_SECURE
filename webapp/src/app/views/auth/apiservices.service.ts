@@ -18,7 +18,7 @@ export class ApiservicesService {
         Authorization: ''
       })
     };
-    return this.api.post('http://127.0.0.1:5000/api/authentication/',body, httpOptions)
+    return this.api.post('/api/authentication/',body, httpOptions)
   }
 }
 
