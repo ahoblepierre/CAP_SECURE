@@ -54,3 +54,4 @@ coverage.xml
 # Autres fichiers spécifiques (ajoute selon tes besoins)
 *.bak
 *.cache
+.qodo
