@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 import os
 from app.models.user import User
 from app.config.development import DevelopmentConfig
@@ -19,8 +19,20 @@ from flask_cors import CORS
 
 from .commands import register_commands
 
+import logging
+
 def create_app():
     app = Flask(__name__)
+
+
+    # Configuration de CORS
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+
+    @app.before_request
+    def handle_options():
+        if request.method == "OPTIONS":
+            return '', 200
+
 
 
 
@@ -32,7 +44,7 @@ def create_app():
 
     csrf.init_app(app)  # Active la protection CSRF
 
-    Talisman(app, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
+    Talisman(app, force_https=False, content_security_policy={"script-src": ["'self'", "'unsafe-inline'"]}) # 🔥 Active les protections HTTP sécurisées
 
 
     # confid cors
@@ -55,7 +67,6 @@ def create_app():
     login_manager.init_app(app) # Initiation de login Manager
 
 
-
     @login_manager.user_loader
     def load_user(user_id):
         """Charge un utilisateur à partir de son ID pour Flask-Login"""
@@ -75,6 +86,10 @@ def create_app():
 
     # Enregistrer les commandes personnalisées
     register_commands(app)
+
+
+
+    logging.basicConfig(level=logging.DEBUG)
 
 
 

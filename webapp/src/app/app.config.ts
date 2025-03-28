@@ -17,6 +17,7 @@ import { rootReducer } from './store'
 import { DatePipe, DecimalPipe } from '@angular/common'
 import { AuthenticationEffects } from './store/authentication/authentication.effects'
 import {
+  HttpClient,
   provideHttpClient,
   withFetch,
   withInterceptorsFromDi,
@@ -24,6 +25,7 @@ import {
 import { FakeBackendProvider } from './core/helpers/fake-backend'
 import { CalendarEffects } from './store/calendar/calendar.effects'
 import { KanbanEffects } from './store/kanban/kanban.effects'
+import { ReactiveFormsModule } from '@angular/forms'
 
 // scroll
 const scrollConfig: InMemoryScrollingOptions = {
@@ -39,6 +41,8 @@ export const appConfig: ApplicationConfig = {
     FakeBackendProvider,
     DatePipe,
     DecimalPipe,
+    HttpClient,
+    ReactiveFormsModule,
     provideZoneChangeDetection({
       eventCoalescing: false,
       runCoalescing: false,
